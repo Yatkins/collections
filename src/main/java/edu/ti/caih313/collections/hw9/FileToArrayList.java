@@ -3,6 +3,7 @@ package edu.ti.caih313.collections.hw9;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class FileToArrayList {
@@ -18,15 +19,22 @@ public class FileToArrayList {
         ArrayList<ArrayList<String>> wholeFile = new ArrayList<>();
         try {
             input = new Scanner(file);
+            String fileAsString = "";
             while (input.hasNextLine()) {
-                ArrayList<String> sentence = new ArrayList<>();
-                String[] words = input.nextLine().split(" ");
-                for (int i = 0; i < words.length; i++) {
-                    sentence.add(words[i]);
-                }
-                wholeFile.add(sentence);
+                fileAsString += input.nextLine();
             }
-        } catch (FileNotFoundException e) {
+                String[] fileSentences = fileAsString.split("[.!?]");
+                for(int i = 0; i < fileSentences.length; i++) {
+                    String sentence = fileSentences[i];
+                    String[] words = sentence.split(" ");
+                    ArrayList<String> wordArray = new ArrayList<>();
+                    for (int j = 0; j < words.length; j++) {
+                        wordArray.add(words[j]);
+                    }
+                    wholeFile.add(wordArray);
+                }System.out.println(wholeFile);
+            }
+         catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         } finally {
             if (input != null) {
@@ -52,12 +60,13 @@ public class FileToArrayList {
         }
     }
 
-
     public static boolean isValid(int sentenceNum, int wordNum, ArrayList<ArrayList<String>> wholeFile) {
         boolean isValid = true;
         if ((sentenceNum > wholeFile.size()) || (wordNum > wholeFile.get(sentenceNum).size())
-                || sentenceNum == 0 || wordNum == 0) {
+                || sentenceNum < 0 || wordNum < 0) {
             isValid = false;
         }return isValid;
     }
 }
+
+
